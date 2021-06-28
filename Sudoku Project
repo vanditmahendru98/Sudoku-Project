@@ -1,0 +1,49 @@
+import numpy as np
+from dokusan import generators
+
+sudokuRandom = np.array(list(str(generators.random_sudoku(avg_rank = 150))))
+print(sudokuRandom.reshape(9,9))
+
+class Solver(object):
+    
+    def sudoku_checker(x,y): 
+        
+        for i in range(9):
+            
+            row = {}
+            column = {}
+            cube = {}
+            rowCube = 3 * (i // 3)
+            columnCube = 3 * (i % 3)
+                
+            for j in range(9):
+                
+                if y[i][j] != '0' and y[i][j] in row:
+                    return False
+                row [y[i][j]] = 1
+                
+                if y[j][i] != '0' and y[j][i] in column:
+                    return False
+                column [y[j][i]] = 1
+                
+                a = rowCube + j // 3
+                b = columnCube + j % 3
+            
+                if y[a][b] in cube and y[a][b] != '0':
+                    return False
+        
+                cube[y[a][b]] = 1
+        
+        return True
+
+check = Solver()    
+print(check.sudoku_checker([
+    ['0','0','0','4','0','0','0','0','0'],
+    ['8','9','4','0','6','0','2','0','0'],
+    ['0','6','0','0','0','3','0','0','0'],
+    ['1','0','3','0','8','0','0','0','7'],
+    ['9','0','6','0','0','5','0','4','1'],
+    ['0','5','0','0','0','0','8','0','0'],
+    ['0','3','9','4','0','0','0','7','0'],
+    ['5','0','0','0','9','2','0','1','0'],
+    ['0','1','0','4','0','0','0','5','0']]))
